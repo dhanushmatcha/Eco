@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organic Store - Naturally You</title>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="aboutus.html">About Us</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html">🛒 Cart</a>
+</nav>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fffaf3; /* Updated to a warm, soft cream background */
+      color: #333;
+    }
+    header {
+      background-color: #d7e7cb;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #2d2d2d;
+      font-weight: bold;
+    }
+    .hero {
+      background: linear-gradient(rgba(44, 66, 47, 0.7), rgba(44, 66, 47, 0.7)), url('https://example.com/hero-image.jpg') no-repeat center center/cover;
+      padding: 100px 40px;
+      color: #fff;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3em;
+    }
+    .hero p {
+      font-size: 1.2em;
+      margin: 20px 0;
+    }
+    .hero button {
+      padding: 10px 25px;
+      font-size: 1em;
+      background-color: #6c9a8b;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .categories, .why-choose-us, .newsletter, footer {
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .categories h2, .why-choose-us h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .category-grid {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    .category {
+      width: 250px;
+      margin: 20px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .newsletter input[type="email"] {
+      padding: 10px;
+      width: 300px;
+      max-width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .newsletter button {
+      padding: 10px 20px;
+      background-color: #88b04b;
+      border: none;
+      color: white;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #e7ecd9;
+      padding: 30px 40px;
+    }
+    footer a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <button id="logoutBtn">Logout</button>
+<button id="recentOrdersBtn">View Recent Orders</button>
+<div id="ordersContainer"></div>
+
+
+  <header>
+    <div><strong>BMR Naturals</strong></div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">About Us</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+      <a href="#">🛒 Cart</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Naturally You, Naturally Better</h1>
+    <p>Explore our eco-friendly range of personal care, grains, and essentials.</p>
+    <button>Shop Now</button>
+  </section>
+
+  <section class="categories">
+    <h2>Featured Categories</h2>
+    <div class="category-grid">
+      <div class="category">
+        <h3>🪥 Personal Care</h3>
+        <p>Bamboo brushes, combs, tongue cleaners</p>
+      </div>
+      <div class="category">
+        <h3>🌾 Grains & Millets</h3>
+        <p>Organic rice, millets, and healthy mixes</p>
+      </div>
+      <div class="category">
+        <h3>🏡 Home Essentials</h3>
+        <p>Eco-friendly products for daily use</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-choose-us">
+    <h2>Why Choose Us</h2>
+    <p>✅ 100% Organic & Eco-Friendly</p>
+    <p>✅ Biodegradable Packaging</p>
+    <p>✅ Locally Sourced Ingredients</p>
+    <p>✅ Plastic-Free Promise</p>
+  </section>
+
+  <section class="newsletter">
+    <h2>Join Our Green Tribe</h2>
+    <p>Get updates and special offers straight to your inbox.</p>
+    <input type="email" placeholder="Your email" />
+    <button>Subscribe</button>
+  </section>
+<button onclick="window.location.href='shop.html'">Shop Now</button>
+<button onclick="window.location.href='aboutus.html'">About Us</button>
+<button onclick="window.location.href='shop.html'">Shop Now</button>
+<button onclick="window.location.href='shop.html'">Shop Now</button>
+
+  <footer>
+    <p>
+      <a href="#">Shop</a> |
+      <a href="#">About</a> |
+      <a href="#">Blog</a> |
+      <a href="#">Contact</a>
+    </p>
+    <p>Follow us: 🌿 📘 🐦 📸</p>
+    <p>© 2025 OrganicStore. All rights reserved.</p>
+  </footer>
+  <script>
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('token'); // Remove the JWT token
+    window.location.href = 'login.html'; // Redirect to login
+  });
+ 
+  document.getElementById('recentOrdersBtn').addEventListener('click', async function () {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to view your orders.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/orders', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const orders = await response.json();
+
+      const container = document.getElementById('ordersContainer');
+      container.innerHTML = '';
+
+      if (orders.length === 0) {
+        container.innerHTML = '<p>No recent orders found.</p>';
+        return;
+      }
+
+      orders.forEach(order => {
+        const orderDiv = document.createElement('div');
+        orderDiv.style.border = '1px solid #ccc';
+        orderDiv.style.padding = '10px';
+        orderDiv.style.margin = '10px 0';
+
+        const productList = order.products.map(p =>
+          `<li>${p.productId.name} (x${p.quantity}) - ₹${p.productId.price * p.quantity}</li>`
+        ).join('');
+
+        orderDiv.innerHTML = `
+          <h3>Order ID: ${order._id}</h3>
+          <p>Status: ${order.status}</p>
+          <p>Total Amount: ₹${order.totalAmount}</p>
+          <ul>${productList}</ul>
+          <p>Date: ${new Date(order.createdAt).toLocaleString()}</p>
+        `;
+
+        container.appendChild(orderDiv);
+      });
+
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      alert('Failed to load recent orders.');
+    }
+  });
+
+
+</script>
+
+</body>
+</html>

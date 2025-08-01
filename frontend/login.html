@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login / Register - Organic Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background: white;
+      padding: 25px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: darkgreen;
+    }
+
+    .switch-btn {
+      background-color: transparent;
+      color: blue;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 15px;
+      display: block;
+    }
+
+    .message {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 id="formTitle">Login</h2>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Register Form (Hidden by Default) -->
+    <div id="registerForm" style="display:none;">
+      <input type="text" id="regName" placeholder="Name" />
+      <input type="email" id="regEmail" placeholder="Email" />
+      <input type="password" id="regPassword" placeholder="Password" />
+      <button onclick="register()">Register</button>
+    </div>
+
+    <button class="switch-btn" onclick="toggleForm()">New user? Click to Register</button>
+
+    <p class="message" id="msg"></p>
+  </div>
+
+
+  <script>
+    let isLogin = true;
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
+      document.getElementById("registerForm").style.display = isLogin ? "none" : "block";
+      document.getElementById("formTitle").innerText = isLogin ? "Login" : "Register";
+      document.querySelector(".switch-btn").innerText = isLogin ? "New user? Click to Register" : "Already registered? Click to Login";
+      document.getElementById("msg").innerText = "";
+    }
+
+    function register() {
+      fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("regName").value,
+          email: document.getElementById("regEmail").value,
+          password: document.getElementById("regPassword").value,
+        }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        document.getElementById("msg").innerText = data.message || "Registration successful!";
+        toggleForm();
+      })
+      .catch(() => {
+        document.getElementById("msg").innerText = "Registration failed!";
+      });
+    }
+
+    function login() {
+      fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: document.getElementById("loginEmail").value,
+          password: document.getElementById("loginPassword").value,
+        }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          document.getElementById("msg").innerText = "Login successful!";
+          setTimeout(() => {
+            // redirect or open your home/cart page
+            window.location.href = "index.html"; // or your home page
+          }, 1000);
+        } else {
+          document.getElementById("msg").innerText = data.message || "Login failed";
+        }
+      })
+      .catch(() => {
+        document.getElementById("msg").innerText = "Login error!";
+      });
+    }
+  </script>
+</body>
+</html>

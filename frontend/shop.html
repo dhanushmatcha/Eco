@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop - Organic Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffaf3;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d7e7cb;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #2d2d2d;
+      font-weight: bold;
+    }
+    .shop-hero {
+      background-color: #88b04b;
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .shop-hero h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .products-section {
+      padding: 60px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .products-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 30px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 280px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+    .product-card img {
+      max-width: 100%;
+      border-radius: 8px;
+      height: 180px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 1.2em;
+      color: #446644;
+    }
+    .product-card p {
+      color: #666;
+      font-size: 0.95em;
+      height: 48px;
+      overflow: hidden;
+    }
+    .product-card button {
+      margin-top: 15px;
+      background-color: #6c9a8b;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .product-card button:hover {
+      background-color: #55775d;
+    }
+    footer {
+      background-color: #e7ecd9;
+      padding: 30px 40px;
+      text-align: center;
+      color: #333;
+      margin-top: 60px;
+    }
+    footer a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+    }
+    /* Toast Notification */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #6c9a8b;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 16px;
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div><strong>OrganicStore</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">🛒 Cart</a>
+    </nav>
+  </header>
+
+  <section class="shop-hero">
+    <h1>Shop Our Organic Products</h1>
+    <p>Explore eco-friendly personal care, grains, millets & more.</p>
+  </section>
+
+  <section class="products-section">
+    <div class="products-grid">
+
+      <div class="product-card">
+        <img src="pictures/bamboo-brush.jpg" alt="Bamboo Brush" />
+        <h3>Bamboo Toothbrush</h3>
+        <p>₹60 each</p>
+        <p>Eco-friendly, biodegradable bamboo toothbrush with soft bristles.</p>
+        <button data-price="60">Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="pictures/tongue-cleaner.jpg" alt="Tongue Cleaner" />
+        <h3>Bamboo Tongue Cleaner</h3>
+        <p>₹30 each</p>
+        <p>Natural bamboo tongue cleaner for better oral hygiene.</p>
+        <button data-price="30">Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+  <img src="pictures/bamboo-comb.jpg" alt="Bamboo Comb" />
+  <h3>Bamboo Comb</h3>
+  <p>₹150 each</p>
+  <p>Eco-friendly comb made from natural bamboo, gentle on hair and scalp.</p>
+  <button data-price="150">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/millet-mix.jpg" alt="Millet Mix" />
+  <h3>Millet Mix</h3>
+  <p>₹90 per Kg</p>
+  <p>A wholesome blend of millets ideal for nutritious meals and porridge.</p>
+  <button data-price="90">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/organic-rice.jpg" alt="Organic Rice" />
+  <h3>Organic Rice</h3>
+  <p>₹100 per Kg</p>
+  <p>Chemical-free, naturally grown rice perfect for daily cooking needs.</p>
+  <button data-price="100">Add to Cart</button>
+</div>
+
+
+    <div class="product-card">
+  <img src="pictures/red-rice.jpg" alt="Red Rice" />
+  <h3>Red Rice</h3>
+  <p>₹180 per Kg</p>
+  <p>A traditional variety of rice with a nutty flavor and a deep red color.</p>
+  <button data-price="180">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/black-rice.jpg" alt="Black Rice" />
+  <h3>Black Rice</h3>
+  <p>₹150 per Kg</p>
+  <p>Also known as forbidden rice, it has a rich, earthy taste and dark purple hue when cooked.</p>
+  <button data-price="150">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/orissa-basmati.jpg" alt="Orissa Basmati" />
+  <h3>Orissa Basmati</h3>
+  <p>₹120 per Kg</p>
+  <p>Long-grained, aromatic basmati rice grown in the fertile lands of Odisha.</p>
+  <button data-price="120">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/copper-powder.jpg" alt="Copper Powder" />
+  <h3>Copper Powder</h3>
+  <p>₹200 per 100g</p>
+  <p>Finely ground copper powder used in traditional applications and preparations.</p>
+  <button data-price="200">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/ganuga-jaggery.jpg" alt="Ganuga Jaggery" />
+  <h3>Ganuga Jaggery</h3>
+  <p>₹100 per Kg</p>
+  <p>Cold-pressed jaggery made using traditional wooden churners for authentic taste.</p>
+  <button data-price="100">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/jaggery-powder.jpg" alt="Jaggery Powder" />
+  <h3>Jaggery Powder</h3>
+  <p>₹90 per Kg</p>
+  <p>Easy-to-use powdered jaggery ideal for cooking and sweetening dishes.</p>
+  <button data-price="90">Add to Cart</button>
+</div>
+
+<div class="product-card">
+  <img src="pictures/sesame-oil.jpg" alt="Sesame Oil" />
+  <h3>Sesame Oil</h3>
+  <p>₹300 per litre</p>
+  <p>Pure, cold-pressed oil with a rich aroma, traditionally used in Indian kitchens.</p>
+  <button data-price="300">Add to Cart</button>
+</div>
+
+
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <a href="shop.html">Shop</a> |
+      <a href="about.html">About</a> |
+      <a href="blog.html">Blog</a> |
+      <a href="contact.html">Contact</a>
+    </p>
+    <p>Follow us: 🌿 📘 🐦 📸</p>
+    <p>© 2025 BMR Naturals. All rights reserved.</p>
+  </footer>
+
+  <div id="toast"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const buttons = document.querySelectorAll(".product-card button");
+      const toast = document.getElementById("toast");
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.className = "show";
+        setTimeout(() => {
+          toast.className = toast.className.replace("show", "");
+        }, 3000);
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          const card = button.closest(".product-card");
+          const name = card.querySelector("h3").textContent.trim();
+          const price = parseInt(button.dataset.price);
+          const image = card.querySelector("img").src;
+
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const existingItem = cart.find(item => item.name === name);
+
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({ name, price, quantity: 1, image });
+          }
+
+          localStorage.setItem("cart", JSON.stringify(cart));
+          showToast(`Added "${name}" to cart`);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

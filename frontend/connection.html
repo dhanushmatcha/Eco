@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Organic Store</title>
+</head>
+<body>
+  <h1>Products</h1>
+  <div id="product-list"></div>
+
+  <script>
+    // 1. Make a GET request to backend API
+    fetch('http://localhost:5000/api/products')
+      .then(response => response.json())   // parse JSON response
+      .then(products => {
+        const productListDiv = document.getElementById('product-list');
+        
+        // 2. Loop through products and display on the page
+        products.forEach(product => {
+          const productDiv = document.createElement('div');
+          productDiv.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p>Price: ₹${product.price}</p>
+            <img src="${product.image}" alt="${product.name}" width="100">
+            <hr>
+          `;
+          productListDiv.appendChild(productDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  </script>
+</body>
+</html>

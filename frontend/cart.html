@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Cart - Organic Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffaf3;
+      color: #333;
+      margin: 0;
+      padding: 20px 40px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      color: #446644;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #d7e7cb;
+      color: #2d2d2d;
+    }
+    td img {
+      width: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button.remove-btn {
+      background-color: #c94c4c;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button.remove-btn:hover {
+      background-color: #a83636;
+    }
+    .total {
+      font-size: 1.4em;
+      text-align: right;
+      margin-top: 20px;
+      color: #446644;
+      font-weight: bold;
+    }
+    .empty-msg {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 1.2em;
+      color: #888;
+    }
+    a.continue-shopping {
+      display: inline-block;
+      margin-top: 20px;
+      color: #6c9a8b;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a.continue-shopping:hover {
+      text-decoration: underline;
+    }
+    button#proceed-payment,
+    button#clear-cart {
+      background-color: #6c9a8b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 15px;
+    }
+    button#clear-cart {
+      background-color: #c94c4c;
+    }
+    button#proceed-payment:hover {
+      background-color: #567b6a;
+    }
+    button#clear-cart:hover {
+      background-color: #a83636;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Your Shopping Cart</h1>
+
+  <div id="cart-container"></div>
+
+  <script>
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function calculateTotal(cart) {
+      return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    }
+
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('cart-container');
+      container.innerHTML = '';
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <p class="empty-msg">Your cart is empty.</p>
+          <a class="continue-shopping" href="shop.html">← Continue Shopping</a>
+        `;
+        return;
+      }
+
+      const table = document.createElement('table');
+
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Name</th>
+            <th>Price (₹)</th>
+            <th>Quantity</th>
+            <th>Subtotal (₹)</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cart.map((item, index) => `
+            <tr data-index="${index}">
+              <td><img src="${item.image}" alt="${item.name}"></td>
+              <td>${item.name}</td>
+              <td>${item.price.toFixed(2)}</td>
+              <td><input type="number" min="1" value="${item.quantity}" class="qty-input" /></td>
+              <td class="subtotal">${(item.price * item.quantity).toFixed(2)}</td>
+              <td><button class="remove-btn">Remove</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      container.appendChild(table);
+
+      // Total price display
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'total';
+      totalDiv.textContent = `Total: ₹${calculateTotal(cart).toFixed(2)}`;
+      container.appendChild(totalDiv);
+
+      // Buttons container
+      const btnContainer = document.createElement('div');
+      btnContainer.style.marginTop = '20px';
+
+      // Proceed to Payment button
+      const paymentBtn = document.createElement('button');
+      paymentBtn.id = 'proceed-payment';
+      paymentBtn.textContent = 'Proceed to Payment';
+      btnContainer.appendChild(paymentBtn);
+
+      // Clear Cart button
+      const clearBtn = document.createElement('button');
+      clearBtn.id = 'clear-cart';
+      clearBtn.textContent = 'Clear Cart';
+      btnContainer.appendChild(clearBtn);
+
+      container.appendChild(btnContainer);
+// AFTER your clearBtn code, add this:
+
+// View Recent Orders button
+const viewOrdersBtn = document.createElement('button');
+viewOrdersBtn.id = 'view-orders';
+viewOrdersBtn.textContent = 'View Recent Orders';
+viewOrdersBtn.style.backgroundColor = '#446644';
+viewOrdersBtn.style.color = 'white';
+viewOrdersBtn.style.border = 'none';
+viewOrdersBtn.style.padding = '12px 24px';
+viewOrdersBtn.style.borderRadius = '8px';
+viewOrdersBtn.style.fontWeight = 'bold';
+viewOrdersBtn.style.cursor = 'pointer';
+btnContainer.appendChild(viewOrdersBtn);
+
+// Container to show recent orders
+const ordersContainer = document.createElement('div');
+ordersContainer.id = 'orders-container';
+ordersContainer.style.marginTop = '20px';
+container.appendChild(ordersContainer);
+
+// Click event to show orders
+viewOrdersBtn.addEventListener('click', () => {
+  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  if (orders.length === 0) {
+    ordersContainer.innerHTML = '<p class="empty-msg">No recent orders found.</p>';
+    return;
+  }
+
+  let html = '<h2>Recent Orders</h2>';
+  orders.forEach((order, i) => {
+    html += `<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:6px;">
+      <strong>Order #${i + 1}</strong> - Date: ${new Date(order.date).toLocaleString()}<br/>
+      Items:<ul>`;
+    order.items.forEach(item => {
+      html += `<li>${item.name} - Qty: ${item.quantity} - Price: ₹${item.price.toFixed(2)}</li>`;
+    });
+    html += `</ul>Total: ₹${order.total.toFixed(2)}</div>`;
+  });
+  ordersContainer.innerHTML = html;
+});
+
+      // Event listeners
+      paymentBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        // Redirect to checkout page
+        window.location.href = 'checkout.html'; // Change as needed
+      });
+
+      clearBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear the cart?')) {
+          localStorage.removeItem('cart');
+          renderCart();
+        }
+      });
+
+      table.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const tr = e.target.closest('tr');
+          const idx = parseInt(tr.dataset.index);
+          let newQty = parseInt(e.target.value);
+          if (isNaN(newQty) || newQty < 1) {
+            newQty = 1;
+            e.target.value = 1;
+          }
+          cart[idx].quantity = newQty;
+          saveCart(cart);
+          renderCart();
+        });
+      });
+
+      table.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const tr = e.target.closest('tr');
+          const idx = parseInt(tr.dataset.index);
+          cart.splice(idx, 1);
+          saveCart(cart);
+          renderCart();
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+    
+  </script>
+
+</body>
+</html>
